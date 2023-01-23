@@ -31,3 +31,26 @@ export const putUpdateTask = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+export const deleteTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Task.findByIdAndDelete(id);
+    res.status(200).send("delete successful");
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+export const putDone = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const taskDone = await Task.findById(id);
+    taskDone.done = !taskDone.done;
+    await taskDone.save();
+    res.status(200).send("change done");
+  } catch (err) {
+    console.log("put Error--->", err);
+    res.status(400).json({ error: err.message });
+  }
+};
